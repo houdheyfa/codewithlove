@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.1.5</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.codewithlove</groupId>
+    <artifactId>openapi</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>openapi</name>
+    <description>Demo project for Generating code from OpenApi doc</description>
+    <properties>
+        <gson.version>2.10.1</gson.version>
+        <jakarta.validation-api.version>3.0.2</jakarta.validation-api.version>
+        <java.version>17</java.version>
+        <lombok.version>1.18.30</lombok.version>
+        <openapi-generator-maven-plugin.version>7.0.1</openapi-generator-maven-plugin.version>
+        <snakeyaml.version>2.0</snakeyaml.version>
+        <springdoc-openapi-ui.version>1.6.8</springdoc-openapi-ui.version>
+        <swagger-parser.version>2.1.14</swagger-parser.version>
+        <swagger-annotations.version>2.2.16</swagger-annotations.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.yaml</groupId>
+                    <artifactId>snakeyaml</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <version>${jakarta.validation-api.version}</version>
+        </dependency>
+
+        <!-- snakeyaml -->
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>${snakeyaml.version}</version>
+        </dependency>
+
+        <!-- openapi/springdoc -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>${swagger-annotations.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>${openapi-generator-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <apiPackage>com.codewithlove.openapi.web.controller</apiPackage>
+                            <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>
+                            <modelNameSuffix>Dto</modelNameSuffix>
+                            <modelPackage>com.codewithlove.openapi.web.dto</modelPackage>
+
+                            <generateAliasAsModel>true</generateAliasAsModel>
+                            <generateApis>true</generateApis>
+                            <generateModelTests>false</generateModelTests>
+                            <generatorName>spring</generatorName>
+                            <generateSupportingFiles>false</generateSupportingFiles>
+                            <configOptions>
+                                <additionalModelTypeAnnotations>
+                                    @lombok.Data @lombok.NoArgsConstructor @lombok.AllArgsConstructor
+                                </additionalModelTypeAnnotations>
+                                <enumPropertyNaming>UPPERCASE</enumPropertyNaming>
+                                <dateLibrary>java8</dateLibrary>
+                                <openApiNullable>false</openApiNullable>
+                                <interfaceOnly>true</interfaceOnly>
+                                <skipDefaultInterface>true</skipDefaultInterface>
+                                <useTags>true</useTags>
+                                <useSpringBoot3>true</useSpringBoot3>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
